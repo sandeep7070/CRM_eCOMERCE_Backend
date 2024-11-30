@@ -22,6 +22,12 @@ const productSchema = new mongoose.Schema({
         required: [true, 'Product stock is required'],
         min: [0, 'Stock cannot be negative']
     },
+    //  avatar: {
+    //   type: String, 
+    // },
+    coverImage: {
+      type: String, // cloudinary
+    },
     attributes: {
         type: mongoose.Schema.Types.Mixed,
         default: {}

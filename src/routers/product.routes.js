@@ -11,7 +11,9 @@ import { upload } from "../middleware/multer.middleware.js";
 const router = Router();
 
 //     register route
-router.route("/product").post(upload.single(""), createProduct);
+router.route("/product").post(upload.single("coverImage"), createProduct);
+router.route("/product").post(createProduct);
+
 
 // Additional  routes
 

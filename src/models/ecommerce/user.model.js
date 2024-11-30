@@ -20,6 +20,12 @@ const userSchema =  new mongoose.Schema({
         required: true,
         
     },
+    // avatar: {
+    //   type: String, //clodinary url
+    // },
+    // coverImage: {
+    //   type: String, // cloudinary
+    // },
     role: {
         type: String,
         enum: ['user', 'admin'], 

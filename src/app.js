@@ -29,7 +29,7 @@ app.use("/api/v1/users", productRouter);
 app.use("/api/v1/users", orderRouter);
 app.use("/api/v1/user", categrayRouter);
 app.use("/api/v1/users", cartRouter);
-app.use("/api/v1/user", sippingRouter)
+app.use("/api/v1/users", sippingRouter)
 
 
 

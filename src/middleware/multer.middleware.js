@@ -1,34 +1,18 @@
-import multer from "multer"
 
 
-// app.use(express.json());
+import multer from 'multer';
+import path from 'path';
 
-
-// const storage = multer.diskStorage({
-//     destination: function(req, file, cd){
-//         cd(null, "./public/temp")
-//     },
-//     filename: function (req, file, cd){
-//         cd(null, file.originalname)
-//     }
-
-// })
-
-// export const upload = multer({
-//     storage,
-// })
-
-
+// Configure Multer storage
 const storage = multer.diskStorage({
-    destination: function (req, file, cb) {
-      cb(null, './public/temp')
-    },
-    filename: function (req, file, cb) {
+  destination: (req, file, cb) => {
+    cb(null, 'public/temp'); // Specify the folder for uploads
+  },
+  filename: (req, file, cb) => {
+    const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
+    cb(null, `${file.fieldname}-${uniqueSuffix}${path.extname(file.originalname)}`);
+  }
+});
 
-      cb(null, file.originalname)
-    }
-  })
-
-export const upload = multer({
-     storage,
-    })
+// Initialize Multer
+export const upload = multer({ storage });
