@@ -1,6 +1,7 @@
 import asyncHandler from '../utils/asyncHandler.js';
 import Product from '../models/ecommerce/product.model.js';
 import cloudinary from 'cloudinary'
+import { uploadOnCloudinary } from '../utils/cloudinary.js';
 // import path from 'path';
 // import DatauriParser from 'datauri/parser.js';
 
@@ -70,14 +71,14 @@ const createProduct = asyncHandler(async (req, res) => {
         //     throw new Error('Cloudinary not veryfai ');
         // }
 
-        const fileUri = getDataUri(file);
+        // const fileUri = getDataUri(file);
+// 
 
         // Detailed error handling for Cloudinary upload
         let mycloud;
         try {
-            mycloud = await cloudinary.v2.uploader.upload(fileUri.content, {
-                folder: 'products'
-            });
+            mycloud = await uploadOnCloudinary(file)
+
         } catch (cloudinaryError) {
             console.error('Cloudinary not upload', cloudinaryError);
             return res.status(500).json({
@@ -87,17 +88,22 @@ const createProduct = asyncHandler(async (req, res) => {
             });
         }
 
+
+        
+        console.log(mycloud)
+
         // Create product
         const newProduct = await Product.create({
             description,
             name,
             price,
             stock,
-            coverImage: mycloud.secure_url,
+            coverImage: mycloud || '',
             attributes: attributes || {}
         });
 
-        res.status(201).json({
+        res.status(201).json(
+            {
             success: true,
             message: "Product created successfully!",
             product: {
@@ -109,7 +115,8 @@ const createProduct = asyncHandler(async (req, res) => {
                 coverImage: newProduct.coverImage,
                 attributes: newProduct.attributes
             }
-        });
+        }       
+    );
     } catch (error) {
         console.error("Product not  creation ", error);
         res.status(500).json({
@@ -134,14 +141,7 @@ const getAllProducts = asyncHandler(async (req, res) => {
 
     res.status(200).json({
         success: true,
-        products: products.map(product => ({
-            id: product._id,
-            name: product.name,
-            description: product.description,
-            price: product.price,
-            stock: product.stock,
-            attributes: product.attributes
-        }))
+        products
     });
 });
 

@@ -25,7 +25,7 @@ import  sippingRouter from './routers/sipping.routes.js'
 
 // Route setup    Users API
 app.use("/api/v1/users", userRouter); 
-app.use("/api/v1/users", productRouter);
+app.use("/api/v1/product", productRouter);
 app.use("/api/v1/users", orderRouter);
 app.use("/api/v1/user", categrayRouter);
 app.use("/api/v1/users", cartRouter);
