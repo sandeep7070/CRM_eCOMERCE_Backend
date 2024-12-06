@@ -64,16 +64,6 @@ const createProduct = asyncHandler(async (req, res) => {
             });
         }
 
-        // Verify Cloudinary configuration before upload
-        // if (!process.env.CLOUDINARY_CLOUD_NAME || 
-        //     !process.env.CLOUDINARY_API_KEY || 
-        //     !process.env.CLOUDINARY_API_SECRET) {
-        //     throw new Error('Cloudinary not veryfai ');
-        // }
-
-        // const fileUri = getDataUri(file);
-// 
-
         // Detailed error handling for Cloudinary upload
         let mycloud;
         try {
@@ -87,9 +77,7 @@ const createProduct = asyncHandler(async (req, res) => {
                 error: cloudinaryError.message
             });
         }
-
-
-        
+     
         console.log(mycloud)
 
         // Create product
@@ -116,7 +104,7 @@ const createProduct = asyncHandler(async (req, res) => {
                 attributes: newProduct.attributes
             }
         }       
-    );
+    );                                               
     } catch (error) {
         console.error("Product not  creation ", error);
         res.status(500).json({
@@ -125,9 +113,14 @@ const createProduct = asyncHandler(async (req, res) => {
             error: error.message
         });
     }
-});
+});                                                       
+                                                          
+                                                          
+                                                         
+                                                         
 
-// Get all products
+                                                         
+// Get all products                                      
 const getAllProducts = asyncHandler(async (req, res) => {
     const products = await Product.find({});
 

@@ -1,10 +1,11 @@
 import asyncHandler from '../utils/asyncHandler.js';
 
-
+                                                    
 const orderUser = asyncHandler(async (req, res) => {
-    console.log("Register User API Hit");
- 
-    // Destructure and validate input
+    console.log("Register User API Hit");           
+                                                        
+                                                      
+    // Destructure and validate input               
     const { productId, quantity, orderPrice, customer, orderItems, address, shippingAddress } = req.body;
  
     if (!productId || !quantity || !orderPrice || !customer || !orderItems || !address || !shippingAddress) {
@@ -25,11 +26,11 @@ const orderUser = asyncHandler(async (req, res) => {
        address, 
        shippingAddress
     };
- 
-    console.log("User saved:", orderUser);
- 
+            
+    console.log("User saved:", orderUser); 
+                                                
     // Respond to the client
-    res.status(201).json({
+    res.status(201).json({                      
        message: "User registered successfully!",
        user: orderUser,
     });
