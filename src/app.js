@@ -10,10 +10,12 @@ const app = express();
 app.use(cors({
   origin: [
     process.env.CORS_ORIGIN, // Your local development 
-    'crm-project-topaz.vercel.app', 
-    'https://crm-project-topaz.vercel.app',
+    // 'crm-project-topaz.vercel.app', 
+    // 'https://crm-project-topaz.vercel.app',
+
     'https://crm-project-ic35.vercel.app',
       /// Your Vercel deployment 
+
     'http://localhost:5173'
      // Your local development client
   ],
