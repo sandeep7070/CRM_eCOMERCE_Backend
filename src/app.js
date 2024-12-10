@@ -10,7 +10,10 @@ const app = express();
 app.use(cors({
   origin: [
     process.env.CORS_ORIGIN, // Your local development 
-    'https://crm-project-topaz.vercel.app', // Your Vercel deployment 
+    'crm-project-topaz.vercel.app', 
+    'https://crm-project-topaz.vercel.app',
+    'https://crm-project-ic35.vercel.app',
+      /// Your Vercel deployment 
     'http://localhost:5173'
      // Your local development client
   ],
@@ -36,7 +39,7 @@ app.use("/api/v1/users", userRouter);
 app.use("/api/v1/product", productRouter);
 app.use("/api/v1/order", orderRouter);
 app.use("/api/v1/categry", categrayRouter);
-app.use("/api/v1/cart", cartRouter);
+app.use("/api/v1/users", cartRouter);
 app.use("/api/v1/sipping", sippingRouter)
 
 

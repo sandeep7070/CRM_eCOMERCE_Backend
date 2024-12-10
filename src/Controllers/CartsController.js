@@ -2,35 +2,54 @@ import asyncHandler from "../utils/asyncHandler.js";
 
 
 
-const cartuser = asyncHandler( async(req, res) => {
-    console.log("cart User Api hit")
-
-    const { productId, quantity, total } = req.body
+const cartuser = asyncHandler(async (req, res) => {
+    const { productId, quantity, total } = req.body;
 
     if (!productId || !quantity || !total) {
-        console.log("Missing requred field")
-        return res.status(400).json({ message: "All fields are required!"})
-
+        return res.status(400).json({ message: "All fields are required!" });
     }
-    console.log(" Recived data:", {productId, quantity, total})
 
-
-    const catuser = {
-        id: Date.now(),
+    const newCart = new Cart({
         productId,
         quantity,
-        total,
-    }
+        total
+    });
 
-    console.log("Carts saved", catuser)
+    const savedCart = await newCart.save();
 
     res.status(201).json({
-        message: "Carts register successfully",
-        user: catuser,
+        message: "Cart registered successfully",
+        cart: savedCart
     });
+});
+
+
+const getAllcart = asyncHandler(async (req, res) => {
+    try {
+        const cart = await Cart.find({});
+
+        if (cart.length === 0) {
+            return res.status(404).json({
+                success: false,
+                message: 'No cart items found'
+            });
+        }    
+
+        res.status(200).json({
+            success: true,
+            count: cart.length,
+            cart
+        });
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            message: 'Error retrieving cart items',
+            error: error.message
+        });
+    }
 });
 
 
 
 
-export { cartuser }
+export { cartuser, getAllcart}
