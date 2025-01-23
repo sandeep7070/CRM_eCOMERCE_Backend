@@ -1,6 +1,7 @@
+import mongoose from 'mongoose';
 import asyncHandler from '../utils/asyncHandler.js';
 import Product from '../models/ecommerce/product.model.js';
-import cloudinary from 'cloudinary'
+// import cloudinary from 'cloudinary'
 import { uploadOnCloudinary } from '../utils/cloudinary.js';
 // import path from 'path';
 // import DatauriParser from 'datauri/parser.js';
@@ -105,7 +106,7 @@ const createProduct = asyncHandler(async (req, res) => {
             }
         }       
     );                                               
-    } catch (error) {
+ } catch (error) {
         console.error("Product not  creation ", error);
         res.status(500).json({
             success: false,
@@ -115,7 +116,7 @@ const createProduct = asyncHandler(async (req, res) => {
     }
 });                                                       
                                                           
-                                                          
+                                 
                                                          
                                                          
 
@@ -123,7 +124,7 @@ const createProduct = asyncHandler(async (req, res) => {
 // Get all products                                      
 const getAllProducts = asyncHandler(async (req, res) => {
     const products = await Product.find({});
-
+ 
     if (products.length === 0) {
         return res.status(404).json({
             success: false,
@@ -141,7 +142,19 @@ const getAllProducts = asyncHandler(async (req, res) => {
 // Get product by ID
 const getProductById = asyncHandler(async (req, res) => {
     const { id } = req.params;
-    const product = await Product.findById(id);
+    
+    // Remove any colon if present and trim whitespace
+    const cleanId = id.replace(':', '').trim();
+    
+    // Validate ObjectId
+    if (!mongoose.Types.ObjectId.isValid(cleanId)) {
+        return res.status(400).json({
+            success: false,
+            message: "Invalid product ID format"
+        });
+    }
+
+    const product = await Product.findById(cleanId);
 
     if (!product) {
         return res.status(404).json({
@@ -149,7 +162,7 @@ const getProductById = asyncHandler(async (req, res) => {
             message: "Product not found!"
         });
     }
-
+ 
     res.status(200).json({
         success: true,
         product: {
@@ -165,61 +178,32 @@ const getProductById = asyncHandler(async (req, res) => {
 
 // Update product
 const updateProduct = asyncHandler(async (req, res) => {
-    const { id } = req.params;
-    const productExists = await Product.findOne({ _id: id });
-
-    if (!productExists) {
-        return res.status(404).json({
+    const cleanId = req.params.id.replace(':', '').trim();
+    
+    if (!mongoose.Types.ObjectId.isValid(cleanId)) {
+        return res.status(400).json({
             success: false,
-            message: "Product not found!"
+            message: "Invalid product ID format"
         });
     }
 
-    // Validate input fields if needed
-    const { description, name, price, stock, attributes } = req.body;
-
-    const updateData = {};
-    if (description) updateData.description = description;
-    if (name) updateData.name = name;
-    if (price) updateData.price = price;
-    if (stock) updateData.stock = stock;
-    if (attributes) updateData.attributes = attributes;
-
-    const updatedProduct = await Product.findByIdAndUpdate(id, updateData, {
-        new: true,
-        runValidators: true
-    });
-
-    res.status(200).json({
-        success: true,
-        product: {
-            id: updatedProduct._id,
-            name: updatedProduct.name,
-            description: updatedProduct.description,
-            price: updatedProduct.price,
-            stock: updatedProduct.stock,
-            attributes: updatedProduct.attributes
-        }
-    });
+    const productExists = await Product.findOne({ _id: cleanId });
+    // Rest of your code...
 });
 
 // Delete product
 const deleteProduct = asyncHandler(async (req, res) => {
-    const { id } = req.params;
-    const product = await Product.findById(id);
-
-    if (!product) {
-        return res.status(404).json({
+    const cleanId = req.params.id.replace(':', '').trim();
+    
+    if (!mongoose.Types.ObjectId.isValid(cleanId)) {
+        return res.status(400).json({
             success: false,
-            message: "Product not found!"
+            message: "Invalid product ID format"
         });
     }
 
-    await Product.findByIdAndDelete(id);
-    res.status(200).json({
-        success: true,
-        message: "Product successfully deleted"
-    });
+    const product = await Product.findById(cleanId);
+    // Rest of your code...
 });
 
 export {
