@@ -12,20 +12,10 @@ const app = express();
 // Middleware setup
 
 app.use(cors({
-  origin: [
-    process.env.CORS_ORIGIN, // Your local development 
-    'crm-project-topaz.vercel.app', 
-    // 'https://crm-project-topaz.vercel.app',
-
-    'https://crm-project-ic35.vercel.app',
-      /// Your Vercel deployment 
- 'http://localhost:5173',
-
-    'http://localhost:5174'
-     // Your local development client
-  ],
-  credentials: true // Important for handling cookies across origins
-}))
+  origin: 'http://localhost:5173', // Allow your frontend's origin
+  methods: 'GET,POST,PUT,DELETE',
+  credentials: true, // If you need to allow cookies or auth headers
+}));
 
 
 app.use(express.json({ limit: "2mb" }));

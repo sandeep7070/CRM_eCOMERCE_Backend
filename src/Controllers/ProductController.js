@@ -115,12 +115,7 @@ const createProduct = asyncHandler(async (req, res) => {
         });
     }
 });                                                       
-                                                          
-                                 
-                                                         
-                                                         
-
-                                                         
+                                                                                                                 
 // Get all products                                      
 const getAllProducts = asyncHandler(async (req, res) => {
     const products = await Product.find({});
